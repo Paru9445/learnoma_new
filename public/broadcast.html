@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Broadcaster</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <!-- for personal debug audio source use this -->
+    <section class="select" style="display: none;">
+      <label for="audioSource">Audio source: </label>
+      <select id="audioSource"></select>
+    </section>
+
+    <!-- for personal debug video source use this -->
+    <section class="select" style="display: none;">
+      <label for="videoSource">Video source: </label>
+      <select id="videoSource"></select>
+    </section>
+
+    <video playsinline autoplay></video>
+
+
+    <button onclick="mute()">Mute</button>
+    <button onclick="unmute()">UnMute</button>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/broadcast.js"></script>
+  </body>
+</html>
