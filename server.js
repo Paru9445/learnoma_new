@@ -13,8 +13,8 @@ var certificate = fs.readFileSync("sslcert/learnomacertificate.crt", "utf8");
 
 var credentials = { key: privateKey, cert: certificate };
 
-// const server = https.createServer(credentials, app);
-const server = http.createServer(app);
+const server = https.createServer(credentials, app);
+// const server = http.createServer(app);
 
 const io = require("socket.io")(server);
 app.use(express.static(__dirname + "/public"));
