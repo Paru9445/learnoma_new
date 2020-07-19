@@ -28,6 +28,7 @@ io.sockets.on("connection", socket => {
   socket.on("broadcaster", (roomName) => {
     broadcaster = socket.id;
     mainRoom = roomName;
+    console.log("main room is ", mainRoom);
     socket.join(mainRoom);
     socket.broadcast.to(mainRoom).emit("broadcaster");
   });
