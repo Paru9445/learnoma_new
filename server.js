@@ -50,7 +50,7 @@ io.sockets.on("connection", socket => {
   });
 
   socket.on("disconnect", () => {
-    socket.to(mainRoom).emit("disconnectPeer", socket.id);
+    socket.to(socket.id).emit("disconnectPeer", socket.id);
   });
 });
 
