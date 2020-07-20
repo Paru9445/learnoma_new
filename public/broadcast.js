@@ -134,6 +134,13 @@ function unpauseVideo(){
   console.log(window.stream.getVideoTracks()[0].muted)
 }
 
+function end(){
+  console.log("window.stream >> ", window.stream);
+  window.stream.getTracks().forEach(track => {
+    track.stop();
+  });
+}
+
 function handleError(error) {
   console.error("Error: ", error);
 }
