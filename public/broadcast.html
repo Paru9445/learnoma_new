@@ -19,8 +19,17 @@
 
     <video playsinline autoplay></video>
 
-    <button onclick="mute()">Mute</button>
-    <button onclick="unmute()">UnMute</button>
+    <div>
+      <button onclick="mute()">Mute</button>
+      <button onclick="unmute()">UnMute</button>
+  
+      <button onclick="pauseVideo()">Hide</button>
+      <button onclick="unpauseVideo()">UnHide</button>
+    </div>
+
+    <div id="students">
+
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/broadcast.js"></script>

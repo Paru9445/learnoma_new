@@ -13,7 +13,10 @@ socket.on("answer", (id, description) => {
   peerConnections[id].setRemoteDescription(description);
 });
 
-socket.on("watcher", id => {
+socket.on("watcher", (id, stName) => {
+  console.log("student name is >> ", stName);
+  document.getElementById("students").innerHTML += `${stName} joined <br/>`;
+
   const peerConnection = new RTCPeerConnection(config);
   peerConnections[id] = peerConnection;
 
@@ -51,7 +54,7 @@ window.onunload = window.onbeforeunload = () => {
 const videoElement = document.querySelector("video");
 const audioSelect = document.querySelector("select#audioSource");
 const videoSelect = document.querySelector("select#videoSource");
-const roomName = prompt("Enter room name to create");
+const roomName = "room1";//prompt("Enter room name to create");
 
 audioSelect.onchange = getStream;
 videoSelect.onchange = getStream;
@@ -110,12 +113,25 @@ function gotStream(stream) {
 }
 
 function mute(){
+  window.stream.getAudioTracks()[0].muted = true;
+  window.stream.getAudioTracks()[0].enabled = false;
   console.log(window.stream.getAudioTracks()[0])
-  window.stream.getAudioTracks()[0].muted = false;
 }
 
 function unmute(){
-  window.stream.getAudioTracks()[0].muted = true;
+  window.stream.getAudioTracks()[0].enabled = true;
+  console.log(window.stream.getAudioTracks()[0].muted)
+}
+
+function pauseVideo(){
+  window.stream.getVideoTracks()[0].muted = true;
+  window.stream.getVideoTracks()[0].enabled = false;
+  console.log(window.stream.getVideoTracks()[0])
+}
+
+function unpauseVideo(){
+  window.stream.getVideoTracks()[0].enabled = true;
+  console.log(window.stream.getVideoTracks()[0].muted)
 }
 
 function handleError(error) {

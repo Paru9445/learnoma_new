@@ -36,8 +36,9 @@ socket.on("candidate", (id, candidate) => {
 });
 
 socket.on("connect", () => {
-  let room = prompt("Enter room name");
-  socket.emit("watcher", room);
+  let room = "room1"; //prompt("Enter room name");
+  let name = "Praveen";
+  socket.emit("watcher", room, name);
 });
 
 socket.on("broadcaster", () => {

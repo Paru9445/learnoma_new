@@ -13,8 +13,8 @@ var certificate = fs.readFileSync("sslcert/learnomacertificate.crt", "utf8");
 
 var credentials = { key: privateKey, cert: certificate };
 
-const server = https.createServer(credentials, app);
-// const server = http.createServer(app);
+// const server = https.createServer(credentials, app);
+const server = http.createServer(app);
 
 const io = require("socket.io")(server);
 app.use(express.static(__dirname + "/public"));
@@ -33,9 +33,9 @@ io.sockets.on("connection", socket => {
     socket.broadcast.to(mainRoom).emit("broadcaster");
   });
 
-  socket.on("watcher", (room) => {
+  socket.on("watcher", (room, stName) => {
     socket.join(room);
-    socket.to(room).emit("watcher", socket.id);
+    socket.to(room).emit("watcher", socket.id, stName);
   });
 
   socket.on("offer", (id, message) => {
