@@ -33,9 +33,9 @@ io.sockets.on("connection", socket => {
     socket.broadcast.to(mainRoom).emit("broadcaster");
   });
 
-  socket.on("watcher", (room, stName) => {
+  socket.on("watcher", (room, stName, img, uid) => {
     socket.join(room);
-    socket.to(room).emit("watcher", socket.id, stName);
+    socket.to(room).emit("watcher", socket.id, stName, img, uid);
   });
 
   socket.on("offer", (id, message) => {
