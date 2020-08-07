@@ -56,6 +56,9 @@ const audioSelect = document.querySelector("select#audioSource");
 const videoSelect = document.querySelector("select#videoSource");
 const roomName = "room1";//prompt("Enter room name to create");
 
+let mediaRecorder;
+let recordedBlobs;
+
 audioSelect.onchange = getStream;
 videoSelect.onchange = getStream;
 
@@ -132,6 +135,91 @@ function pauseVideo(){
 function unpauseVideo(){
   window.stream.getVideoTracks()[0].enabled = true;
   console.log(window.stream.getVideoTracks()[0].muted)
+}
+
+function startRecording() {
+  recordedBlobs = [];
+  let options = {mimeType: 'video/webm;codecs=vp9,opus'};
+  if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+    console.error(`${options.mimeType} is not supported`);
+    options = {mimeType: 'video/webm;codecs=vp8,opus'};
+    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+      console.error(`${options.mimeType} is not supported`);
+      options = {mimeType: 'video/webm'};
+      if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+        console.error(`${options.mimeType} is not supported`);
+        options = {mimeType: ''};
+      }
+    }
+  }
+
+  try {
+    mediaRecorder = new MediaRecorder(window.stream, options);
+  } catch (e) {
+    console.error('Exception while creating MediaRecorder:', e);
+    errorMsgElement.innerHTML = `Exception while creating MediaRecorder: ${JSON.stringify(e)}`;
+    return;
+  }
+
+  console.log('Created MediaRecorder', mediaRecorder, 'with options', options);
+  // recordButton.textContent = 'Stop Recording';
+  // playButton.disabled = true;
+  // downloadButton.disabled = true;
+  mediaRecorder.onstop = (event) => {
+    console.log('Recorder stopped: ', event);
+    console.log('Recorded Blobs: ', recordedBlobs);
+  };
+  mediaRecorder.ondataavailable = handleDataAvailable;
+  mediaRecorder.start();
+  console.log('MediaRecorder started', mediaRecorder);
+}
+
+function stopRecording() {
+  mediaRecorder.stop();
+}
+
+function download(){
+  const blob = new Blob(recordedBlobs, {type: 'video/webm'});
+  const url = window.URL.createObjectURL(blob);
+  filename = prompt("Enter a name for file");
+  const a = document.createElement('a');
+  a.style.display = 'none';
+  a.href = url;
+  a.download = filename+'.webm';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }, 100);
+
+  // upload video code
+
+  // var formData = new FormData();
+  // formData.append(fileType + '-filename', fileName);
+  // formData.append(fileType + '-blob', blob);
+
+  // xhr('save.php', formData, function (fName) {
+  //     window.open(location.href + fName);
+  // });
+
+  // function xhr(url, data, callback) {
+  //     var request = new XMLHttpRequest();
+  //     request.onreadystatechange = function () {
+  //         if (request.readyState == 4 && request.status == 200) {
+  //             callback(location.href + request.responseText);
+  //         }
+  //     };
+  //     request.open('POST', url);
+  //     request.send(data);
+  // }
+}
+
+function handleDataAvailable(event) {
+  console.log('handleDataAvailable', event);
+  if (event.data && event.data.size > 0) {
+    recordedBlobs.push(event.data);
+  }
 }
 
 function end(){

@@ -6,13 +6,13 @@
   </head>
   <body>
     <!-- for personal debug audio source use this -->
-    <section class="select" style="display: none;">
+    <section class="select">
       <label for="audioSource">Audio source: </label>
       <select id="audioSource"></select>
     </section>
 
     <!-- for personal debug video source use this -->
-    <section class="select" style="display: none;">
+    <section class="select">
       <label for="videoSource">Video source: </label>
       <select id="videoSource"></select>
     </section>
@@ -25,6 +25,11 @@
   
       <button onclick="pauseVideo()">Hide</button>
       <button onclick="unpauseVideo()">UnHide</button>
+
+      <button id="record" onclick="startRecording()">Start Recording</button>
+      <button id="record" onclick="stopRecording()">Stop Recording</button>
+
+      <button id="download" onclick="download()">Download</button>
       
       <button onclick="end()">End Call</button>
     </div>
